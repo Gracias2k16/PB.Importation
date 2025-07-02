@@ -41,7 +41,7 @@ services:
       - "443:443"
       - "81:81"
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - ./:/app/data
+      - ./app/letsencrypt:/etc/letsencrypt
 volumes:
   mysql-volume:

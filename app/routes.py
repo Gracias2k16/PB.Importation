@@ -6,8 +6,6 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 
-limiter = Limiter(get_remote_address, app=app, default_limits=["5 per minute"])
-
 #===================================================================================================
 
 @app.after_request
@@ -45,7 +43,6 @@ def Demande_route():
 #===================================================================================================
 
 @app.route('/Creation_compte', methods=['GET', 'POST'])
-@limiter.limit("5 per minute")
 def Creation_compte_route():
     return Création_Compte()
     
