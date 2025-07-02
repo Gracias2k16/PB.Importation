@@ -14,7 +14,7 @@ def Recupération_des_utilisateurs(email):
         return None  
 
     try:
-        query = "SELECT id_Utilisateur, id_Mail, id_Mdp, id_Type FROM Compte WHERE id_Mail = %s" #sql qui permet de récupérer l'email
+        query = "SELECT id_Utilisateur, id_Mail, id_Mdp, id_Type FROM id_Compte WHERE id_Mail = %s" #sql qui permet de récupérer l'email
         cur.execute(query, (email,)) 
 
         user = cur.fetchone() #Stock l'adersse mail 
@@ -74,13 +74,13 @@ def gerer_comptes_Fonction():
             for user_email in selected_users:
                 new_role = request.form.get(f'new_role_{user_email}')
                 if new_role:
-                    cur.execute("UPDATE Compte SET id_Type = %s WHERE id_Mail = %s", (new_role, user_email))
+                    cur.execute("UPDATE id_Compte SET id_Type = %s WHERE id_Mail = %s", (new_role, user_email))
             conn.commit()
             flash("Les rôles ont été modifiés avec succès.", "success")
 
         elif action == "supprimer":
             for user_email in selected_users:
-                cur.execute("DELETE FROM Compte WHERE id_Mail = %s", (user_email,))
+                cur.execute("DELETE FROM id_Compte WHERE id_Mail = %s", (user_email,))
             conn.commit()
             flash("Les comptes ont été supprimés avec succès.", "success")
 
@@ -149,13 +149,13 @@ def Création_Compte():
     
     try:
     # Vérifier si l'email existe déjà 
-        cur.execute("SELECT * FROM Compte WHERE id_Mail = %s", (mail,))
+        cur.execute("SELECT * FROM id_Compte WHERE id_Mail = %s", (mail,))
         if cur.fetchone():
             flash("Cet email est déjà utilisé.", 'danger')
             return redirect(url_for('Creation_compte_route'))
 
         sql = """
-        INSERT INTO Compte (id_Mail, Num_tel, id_Nom, id_Prenom, id_Nom_societee, id_Mdp, id_Type)
+        INSERT INTO id_Compte (id_Mail, Num_tel, id_Nom, id_Prenom, id_Nom_societee, id_Mdp, id_Type)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         cur.execute(sql, (mail, num, nom, prenom, societe, hashed_password, 'UTILISATEUR'))
@@ -189,7 +189,7 @@ def acces_comptes():
         return render_template('Comptes.html', users=[])
 
     try:
-        cur.execute("SELECT id_Mail, id_Type FROM  Compte")
+        cur.execute("SELECT id_Mail, id_Type FROM id_Compte")
         users = cur.fetchall()
         return render_template('Comptes.html', users=users)
     
@@ -208,7 +208,7 @@ def Envoie_demande():
             conn, cur = connexion_à_BDD()
             cur.execute("""
                 SELECT id_CP, id_Ville, id_N_Batiment, id_cmplt_rue, id_Nom_rue
-                FROM Adresse
+                FROM id_Adresse
                 WHERE id_Utilisateur = %s
                 LIMIT 1
             """, (user_id,))
@@ -280,7 +280,7 @@ def Envoie_demande():
     try:
             # Insertion des données dans la table Demande
             sql = """
-            INSERT INTO Demande (id_Marque, id_Serie, id_Moteur, id_Boite, id_Utilisateur, id_Type, id_Etat, 
+            INSERT INTO id_Demande (id_Marque, id_Serie, id_Moteur, id_Boite, id_Utilisateur, id_Type, id_Etat, 
                                  id_Puissance, id_KM_max, id_Budget, id_Annee, id_Options, id_Description)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
@@ -291,7 +291,7 @@ def Envoie_demande():
 
             # Insertion des données dans la table Adresse
             sql = """
-            UPDATE Adresse
+            UPDATE id_Adresse
                 SET id_N_Batiment = %s,
                 id_CP = %s,
                 id_cmplt_rue = %s,
@@ -327,7 +327,7 @@ def Gestion_demande():
     if conn is None or cur is None:
         return render_template('Gestion_demandes.html', users=[])
     
-    cur.execute("SELECT * FROM Demande")
+    cur.execute("SELECT * FROM id_Demande")
     demandes = cur.fetchall()
 
     return render_template('Gestion_demandes.html', demandes=demandes)

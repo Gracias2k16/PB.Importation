@@ -12,14 +12,12 @@ services:
       - db
       
   db:
-    image: mysql
+    image: mysql:latest
     container_name: mysql
     restart: always
     environment:
       MYSQL_DATABASE: PB_Import_mysql
       MYSQL_ROOT_PASSWORD: zebi
-      MYSQL_USER: Léo
-      MYSQL_PASSWORD: Léo
     ports:
       - "3306:3306"
     volumes:
