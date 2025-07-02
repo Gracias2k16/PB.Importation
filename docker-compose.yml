@@ -17,7 +17,7 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: PB_Import_mysql
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: zebi
       MYSQL_USER: Léo
       MYSQL_PASSWORD: Léo
     ports:
